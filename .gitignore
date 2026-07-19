@@ -1,23 +1,29 @@
-# Virtual Environment
-env/
-.venv/
-venv/
-
-# Python Cache
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
-# VS Code
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# VSCode
 .vscode/
 
 # Environment
 .env
 
-# Local models
-models/
-
-# Hugging Face cache
+# Hugging Face Cache
 .cache/
+huggingface/
+
+# Torch Cache
+torch_cache/
+
+# Model Lokal (opsional)
+models/
 
 # OS
 .DS_Store

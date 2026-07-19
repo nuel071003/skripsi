@@ -1,9 +1,5 @@
-# ============================================================
-# DeteksiBerita
-# Implementasi NLP Menggunakan Model BART
-# ============================================================
-
 Flask>=3.0.0
+gunicorn>=22.0.0
 
 torch>=2.2.0
 transformers>=4.40.0

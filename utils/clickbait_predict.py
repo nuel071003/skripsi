@@ -24,7 +24,7 @@ def muat_model_clickbait():
 
     Prioritas:
     1. Folder lokal (untuk development)
-    2. Hugging Face (untuk Render/Hosting)
+    2. Hugging Face (untuk Render)
     """
 
     global _tokenizer, _model
@@ -32,34 +32,27 @@ def muat_model_clickbait():
     if _tokenizer is not None and _model is not None:
         return
 
-    # ==========================
-    # 1. Jika model lokal ada
-    # ==========================
-    if os.path.exists(MODEL_PATH):
-        print("[INFO] Menggunakan model lokal...")
+    try:
+        if os.path.exists(MODEL_PATH):
+            print("[INFO] Menggunakan model lokal...")
 
-        _tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+            _tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
+            _model = AutoModelForSequenceClassification.from_pretrained(
+                MODEL_PATH
+            )
+        else:
+            print("[INFO] Model lokal tidak ditemukan.")
+            print("[INFO] Mengunduh model dari Hugging Face...")
 
-        _model = AutoModelForSequenceClassification.from_pretrained(
-            MODEL_PATH
+            _tokenizer = AutoTokenizer.from_pretrained(HF_MODEL)
+            _model = AutoModelForSequenceClassification.from_pretrained(
+                HF_MODEL
+            )
+
+        _model.eval()
+        print("[INFO] Model Clickbait siap digunakan.")
+
+    except Exception as e:
+        raise RuntimeError(
+            f"Gagal memuat model Clickbait: {e}"
         )
-
-    # ==========================
-    # 2. Jika tidak ada
-    # Download dari Hugging Face
-    # ==========================
-    else:
-        print("[INFO] Model lokal tidak ditemukan.")
-        print("[INFO] Mengunduh model dari Hugging Face...")
-
-        _tokenizer = AutoTokenizer.from_pretrained(
-            HF_MODEL
-        )
-
-        _model = AutoModelForSequenceClassification.from_pretrained(
-            HF_MODEL
-        )
-
-    _model.eval()
-
-    print("[INFO] Model Clickbait siap digunakan.")

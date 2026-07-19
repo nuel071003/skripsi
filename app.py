@@ -50,13 +50,8 @@ from utils.hoax_predict      import muat_model_hoax,      prediksi_hoax, cari_ka
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "deteksi-berita-secret-2026")
 
-
-# ---------------------------------------------------------------
-# Konfigurasi Path Model
-# ---------------------------------------------------------------
-BASE_DIR        = os.path.dirname(os.path.abspath(__file__))
-MODEL_CLICKBAIT = os.path.join(BASE_DIR, "models", "model_clickbait")
-MODEL_HOAX      = os.path.join(BASE_DIR, "models", "model_hoax")
+# Muat model saat aplikasi dibuat
+muat_semua_model()
 
 # Flag: apakah model berhasil dimuat?
 model_loaded = False
@@ -79,15 +74,34 @@ def muat_semua_model():
     cb_ada = os.path.exists(MODEL_CLICKBAIT)
     hx_ada = os.path.exists(MODEL_HOAX)
 
-    if not cb_ada or not hx_ada:
-        print("\n[WARN] ====================================")
-        if not cb_ada:
-            print(f"  Model clickbait tidak ditemukan: {MODEL_CLICKBAIT}")
-        if not hx_ada:
-            print(f"  Model hoaks tidak ditemukan: {MODEL_HOAX}")
-        print("  Sistem tidak dapat menjalankan prediksi.")
-        print("[WARN] ====================================\n")
-        return
+def muat_semua_model():
+    """
+    Memuat model clickbait dan hoaks.
+
+    Jika model lokal tersedia akan digunakan.
+    Jika tidak tersedia, model akan diunduh otomatis
+    dari Hugging Face.
+    """
+
+    global model_loaded
+
+    try:
+        print("[INFO] Memuat model Clickbait...")
+        muat_model_clickbait()
+
+        print("[INFO] Memuat model Hoaks...")
+        muat_model_hoax()
+
+        model_loaded = True
+
+        print("\n===================================")
+        print("Semua model berhasil dimuat.")
+        print("Sistem siap menerima request.")
+        print("===================================\n")
+
+    except Exception as e:
+        model_loaded = False
+        print(f"\n[ERROR] Gagal memuat model:\n{e}\n")
 
     try:
         # Muat kedua model ke memori
@@ -222,7 +236,7 @@ def detect():
             "index.html",
             error=(
                 "Model belum berhasil dimuat. "
-                "Pastikan folder models/model_clickbait dan models/model_hoax tersedia, "
+                "Model belum berhasil dimuat. Silakan periksa log aplikasi untuk mengetahui penyebabnya."
                 "lalu restart server Flask."
             )
         )
@@ -327,9 +341,10 @@ def api_status():
         "aplikasi"    : "DeteksiBerita",
         "versi"       : "1.0.0",
         "model_loaded": model_loaded,
-        "models": {
-            "clickbait": os.path.exists(MODEL_CLICKBAIT),
-            "hoax"     : os.path.exists(MODEL_HOAX),
+        ""models": {
+          "clickbait": model_loaded,
+          "hoax": model_loaded,
+        },
         },
     })
 
@@ -344,9 +359,6 @@ def health():
 # Entry Point – Titik masuk program
 # ===============================================================
 if __name__ == "__main__":
-    # Muat model sebelum server mulai menerima request
-    muat_semua_model()
-
     print("=" * 55)
     print("  DeteksiBerita - Server Berjalan")
     print("  Buka browser dan akses: http://localhost:5000")

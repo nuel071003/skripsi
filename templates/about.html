@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeteksiBerita - Tentang Sistem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-animation" id="particles-js"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top glass-navbar">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+                <i class="fa-solid fa-microchip text-primary me-2"></i>DeteksiBerita
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('about') }}">Tentang Sistem</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="d-flex align-items-center min-vh-100 position-relative z-1 pt-5">
+        <div class="container mt-5 mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="glass-panel p-5 fade-in-up">
+                        <h2 class="mb-4 text-center">Tentang <span class="text-gradient">Sistem</span></h2>
+                        <hr class="border-primary opacity-50 mb-4">
+                        
+                        <p class="lead text-center mb-5">
+                            Sistem ini dibuat untuk membantu pengguna mendeteksi apakah sebuah berita mengandung unsur clickbait dan/atau hoaks secara otomatis.
+                        </p>
+
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="feature-card p-4 rounded h-100">
+                                    <i class="fa-solid fa-brain fa-3x text-primary mb-3"></i>
+                                    <h4>Model AI Canggih</h4>
+                                    <p class="text-muted">Menggunakan arsitektur BART (Bidirectional and Auto-Regressive Transformers) yang telah dilatih (Fine-tuned) khusus untuk bahasa Indonesia.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-card p-4 rounded h-100">
+                                    <i class="fa-solid fa-shield-halved fa-3x text-success mb-3"></i>
+                                    <h4>Analisis Ganda</h4>
+                                    <p class="text-muted">Melakukan dua tugas secara bersamaan: mendeteksi manipulasi judul (clickbait) dan memverifikasi kebenaran isi berita (hoaks).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <h4 class="mb-3"><i class="fa-solid fa-gears text-warning me-2"></i> Cara Kerja</h4>
+                            <ol class="list-group list-group-numbered list-group-flush bg-transparent">
+                                <li class="list-group-item bg-transparent text-light border-secondary">Pengguna memasukkan URL portal berita online.</li>
+                                <li class="list-group-item bg-transparent text-light border-secondary">Sistem melakukan web scraping untuk mengekstrak judul dan isi teks.</li>
+                                <li class="list-group-item bg-transparent text-light border-secondary">Model Clickbait Menganalisis judul berita.</li>
+                                <li class="list-group-item bg-transparent text-light border-secondary">Model Hoaks menganalisis isi berita secara mendalam.</li>
+                                <li class="list-group-item bg-transparent text-light border-secondary">Sistem menyajikan hasil probabilitas dan kesimpulan akhir kepada pengguna.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer py-3 text-center glass-footer position-relative z-1 mt-auto">
+        <div class="container">
+            <span class="text-muted">© 2026 DeteksiBerita - Skripsi NLP BART</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

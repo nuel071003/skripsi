@@ -42,7 +42,7 @@ def muat_model_clickbait():
             )
         else:
             print("[INFO] Model lokal tidak ditemukan.")
-            print("[INFO] Mengunduh model dari Hugging Face...")
+            print(f"[INFO] Mengunduh model dari Hugging Face: {HF_MODEL}")
 
             _tokenizer = AutoTokenizer.from_pretrained(HF_MODEL)
             _model = AutoModelForSequenceClassification.from_pretrained(

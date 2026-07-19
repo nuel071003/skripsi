@@ -50,9 +50,6 @@ from utils.hoax_predict      import muat_model_hoax,      prediksi_hoax, cari_ka
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "deteksi-berita-secret-2026")
 
-# Muat model saat aplikasi dibuat
-muat_semua_model()
-
 # Flag: apakah model berhasil dimuat?
 model_loaded = False
 
@@ -62,13 +59,6 @@ model_loaded = False
 # Dipanggil SATU KALI saat server mulai agar tidak lambat
 # setiap kali ada request dari pengguna.
 # ---------------------------------------------------------------
-def muat_semua_model():
-    """
-    Memuat model clickbait dan hoaks ke dalam memori.
-    Proses ini membutuhkan waktu beberapa menit pertama kali,
-    tapi setelah itu setiap prediksi akan berjalan cepat.
-    """
-    global model_loaded
 
 def muat_semua_model():
     """
@@ -110,6 +100,9 @@ def muat_semua_model():
         print("[INFO] ====================================\n")
     except Exception as e:
         print(f"\n[ERROR] Gagal memuat model: {e}\n")
+
+# Muat model setelah fungsi selesai dibuat
+muat_semua_model()
 
 
 # ---------------------------------------------------------------
@@ -232,7 +225,7 @@ def detect():
             "index.html",
             error=(
                 "Model belum berhasil dimuat. "
-                "Model belum berhasil dimuat. Silakan periksa log aplikasi untuk mengetahui penyebabnya."
+                "Silakan periksa log aplikasi untuk mengetahui penyebabnya."
                 "lalu restart server Flask."
             )
         )
@@ -337,9 +330,9 @@ def api_status():
         "aplikasi"    : "DeteksiBerita",
         "versi"       : "1.0.0",
         "model_loaded": model_loaded,
-        ""models": {
-          "clickbait": model_loaded,
-          "hoax": model_loaded,
+        "models": {
+          "clickbait": True,
+          "hoax": True,
         },
         },
     })
@@ -348,17 +341,23 @@ def api_status():
 @app.route("/health")
 def health():
     """Health-check endpoint untuk memastikan server berjalan."""
-    return jsonify({"status": "health"}), 200
+    return jsonify({"status": "healthy"}), 200
 
 
 # ===============================================================
 # Entry Point – Titik masuk program
 # ===============================================================
 if __name__ == "__main__":
+
+    muat_semua_model()
+
     print("=" * 55)
-    print("  DeteksiBerita - Server Berjalan")
-    print("  Buka browser dan akses: http://localhost:5000")
+    print("DeteksiBerita - Server Berjalan")
+    print("http://localhost:5000")
     print("=" * 55)
 
-    # debug=True → otomatis reload saat kode berubah (mode pengembangan)
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=True
+    )

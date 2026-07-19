@@ -70,10 +70,6 @@ def muat_semua_model():
     """
     global model_loaded
 
-    # Cek apakah folder model ada
-    cb_ada = os.path.exists(MODEL_CLICKBAIT)
-    hx_ada = os.path.exists(MODEL_HOAX)
-
 def muat_semua_model():
     """
     Memuat model clickbait dan hoaks.
@@ -352,7 +348,7 @@ def api_status():
 @app.route("/health")
 def health():
     """Health-check endpoint untuk memastikan server berjalan."""
-    return jsonify({"status": "healthy"}), 200
+    return jsonify({"status": "health"}), 200
 
 
 # ===============================================================

@@ -50,6 +50,9 @@ from utils.hoax_predict      import muat_model_hoax,      prediksi_hoax, cari_ka
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "deteksi-berita-secret-2026")
 
+# Load model saat aplikasi dijalankan
+muat_semua_model()
+
 # Flag: apakah model berhasil dimuat?
 model_loaded = False
 
@@ -59,19 +62,20 @@ model_loaded = False
 # Dipanggil SATU KALI saat server mulai agar tidak lambat
 # setiap kali ada request dari pengguna.
 # ---------------------------------------------------------------
-
 def muat_semua_model():
     """
-    Memuat model clickbait dan hoaks.
+    Memuat seluruh model.
 
-    Jika model lokal tersedia akan digunakan.
-    Jika tidak tersedia, model akan diunduh otomatis
-    dari Hugging Face.
+    Jika folder model lokal tersedia maka digunakan.
+    Jika tidak tersedia maka otomatis download dari
+    Hugging Face.
     """
 
     global model_loaded
 
     try:
+
+        print("=" * 50)
         print("[INFO] Memuat model Clickbait...")
         muat_model_clickbait()
 
@@ -80,30 +84,19 @@ def muat_semua_model():
 
         model_loaded = True
 
-        print("\n===================================")
-        print("Semua model berhasil dimuat.")
-        print("Sistem siap menerima request.")
-        print("===================================\n")
+        print("=" * 50)
+        print("[INFO] Semua model berhasil dimuat.")
+        print("[INFO] Sistem siap digunakan.")
+        print("=" * 50)
 
     except Exception as e:
+
         model_loaded = False
-        print(f"\n[ERROR] Gagal memuat model:\n{e}\n")
 
-    try:
-        # Muat kedua model ke memori
-        muat_model_clickbait()
-        muat_model_hoax()
-        model_loaded = True
-        print("\n[INFO] ====================================")
-        print("  Semua model BART berhasil dimuat!")
-        print("  Sistem siap menerima request.")
-        print("[INFO] ====================================\n")
-    except Exception as e:
-        print(f"\n[ERROR] Gagal memuat model: {e}\n")
-
-# Muat model setelah fungsi selesai dibuat
-muat_semua_model()
-
+        print("=" * 50)
+        print("[ERROR] Gagal memuat model")
+        print(e)
+        print("=" * 50)
 
 # ---------------------------------------------------------------
 # Fungsi: tentukan_kesimpulan
@@ -225,7 +218,7 @@ def detect():
             "index.html",
             error=(
                 "Model belum berhasil dimuat. "
-                "Silakan periksa log aplikasi untuk mengetahui penyebabnya."
+                 "Model belum berhasil dimuat. Silakan periksa log aplikasi."
                 "lalu restart server Flask."
             )
         )
@@ -331,9 +324,8 @@ def api_status():
         "versi"       : "1.0.0",
         "model_loaded": model_loaded,
         "models": {
-          "clickbait": True,
-          "hoax": True,
-        },
+          "clickbait": model_loaded,
+          "hoax": model_loaded,
         },
     })
 
@@ -349,11 +341,8 @@ def health():
 # ===============================================================
 if __name__ == "__main__":
 
-    muat_semua_model()
-
     print("=" * 55)
     print("DeteksiBerita - Server Berjalan")
-    print("http://localhost:5000")
     print("=" * 55)
 
     app.run(

@@ -341,12 +341,14 @@ def health():
 # ===============================================================
 if __name__ == "__main__":
 
+    port = int(os.environ.get("PORT", 7860))
+
     print("=" * 55)
     print("DeteksiBerita - Server Berjalan")
     print("=" * 55)
 
     app.run(
         host="0.0.0.0",
-        port=5000,
-        debug=True
+        port=port,
+        debug=False
     )

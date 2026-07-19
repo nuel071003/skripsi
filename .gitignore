@@ -13,6 +13,12 @@ __pycache__/
 # Environment
 .env
 
+# Local models
+models/
+
+# Hugging Face cache
+.cache/
+
 # OS
 .DS_Store
 Thumbs.db

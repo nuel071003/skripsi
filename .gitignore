@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# VSCode
+.vscode/
+
+# Environment
+.env
+
+# Hugging Face Cache
+.cache/
+huggingface/
+
+# Torch Cache
+torch_cache/
+
+# Model Lokal (opsional)
+models/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,19 @@
+# =============================================================
+# DeteksiBerita – requirements.txt
+# Skripsi: Implementasi NLP Menggunakan Model BART untuk
+#          Deteksi Clickbait dan Hoaks pada Berita Indonesia
+# =============================================================
+
+# ---------- Web Framework ----------
+flask>=3.0.0               # Framework web utama untuk membuat aplikasi
+
+# ---------- Model NLP & Deep Learning ----------
+transformers>=4.40.0       # Library Hugging Face untuk model BART
+torch>=2.2.0               # Framework PyTorch untuk inferensi model
+sentencepiece>=0.2.0       # Tokenizer BPE (dibutuhkan beberapa model BART)
+protobuf>=4.25.0           # Dibutuhkan oleh sentencepiece
+
+# ---------- Web Scraping ----------
+requests>=2.31.0           # Mengambil halaman web (HTTP GET)
+beautifulsoup4>=4.12.0     # Parsing HTML untuk ekstraksi teks berita
+lxml>=5.0.0                # Parser HTML alternatif yang lebih cepat (opsional, disarankan)
